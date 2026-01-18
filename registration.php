@@ -17,10 +17,16 @@
     <?php   
        if(isset($_POST["submit"])){
 
-          $fullname=$_POST["fullname"];
-          $email=$_POST["email"];
-          $password=$_POST["password"];
-          $passwordRepeat=$_POST["repeat_password"];
+        $fullname=$_POST["fullname"];
+        $email=$_POST["email"];
+        $password=$_POST["password"];
+        $passwordRepeat=$_POST["repeat_password"];
+        
+
+        $passwordash=password_hash($password , PASSWORD_DEFAULT);
+
+
+         
 
           $error =array();
           if(empty($fullname) or empty($email) or empty($password) or empty($passwordRepeat)){
@@ -43,7 +49,17 @@
          foreach($error as $errors){
           echo "<div class='alert alert-danger'> $errors  </div>";
         }else{
-            
+            require_once "database.php";
+            $sql="INSERT INTO users (full_name , email , password ) values
+            ( ? , ? , ? )";
+
+            $stmt=mysqli_stmt_init($conn);
+            $prepareStmt= mysqli_stmt_prepare($stmt , $sql);
+
+            if($prepareStmt){
+                 mysqli_stmt_bind_param($stmt,"sss",$fullname,$email ,$passwordash);
+            }
+
         }
        }
     ?>
