@@ -57,7 +57,12 @@
             $prepareStmt= mysqli_stmt_prepare($stmt , $sql);
 
             if($prepareStmt){
-                 mysqli_stmt_bind_param($stmt,"sss",$fullname,$email ,$passwordash);
+                mysqli_stmt_bind_param($stmt,"sss",$fullname,$email ,$passwordash);
+                mysqli_stmt_execute($stmt);
+                echo "<div class='alert alert-success'>You are register successfully.</div>";
+
+            }else{
+                die("Something went wrong");
             }
 
         }
