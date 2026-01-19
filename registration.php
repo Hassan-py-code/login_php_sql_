@@ -1,4 +1,14 @@
 
+<?php   
+  
+   session_start();
+   if(isset($_SESSION["user"])){
+        header("location: index.php");
+   }
+   print_r($_SESSION);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,11 +55,20 @@
            array_push($error ,"password does not match");
          }
 
+         require_once "database.php";
+         $sql="SELECT * FROM users where email = '$email' ";
+         $result=mysqli_query($conn,$sql);
+         $rowcount=mysqli_num_rows($result);
+
+         if($rowcount){
+             array_push($error,"Email alerady exists!");
+         }
+
          if(count($error) > 0 )
          foreach($error as $errors){
           echo "<div class='alert alert-danger'> $errors  </div>";
         }else{
-            require_once "database.php";
+        
             $sql="INSERT INTO users (full_name , email , password ) values
             ( ? , ? , ? )";
 
