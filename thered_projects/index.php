@@ -24,27 +24,36 @@
   <tbody>
      
     <?php  
-      mysqli_connect("localhost","root","","students");
+       $connect=mysqli_connect("localhost","root","","students");
+       if(!$connect){
+          die("Connection is not successfully");
+       }
+
+    //    $sql="SELECT * FROM users (f_name , l_name , email)
+    //    VALUES ('','','')"
+    $sql="SELECT * FROM users";
+    $result=mysqli_query($connect,$sql);
+
+   
+
+    while($row = mysqli_fetch_array($result)){
+        $id=$row["id"];
+        $first_name=$row["f_name"];
+        $last_name= $row["l_name"];
+        $email=$row["email"];
+       echo "
+       <tr>
+      <th scope='row'>$id</th>
+      <td>$first_name</td>
+      <td>$last_name</td>
+      <td>$email</td>
+    </tr>
+       
+       ";
+    }
     ?>
 
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+   
   </tbody>
 </table>
 
